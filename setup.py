@@ -31,7 +31,7 @@ setup(
     install_requires=[
         'jsonschema',
         'six',
-        'pyaml',
+        'pyyaml',
     ],
     license=about['__license__']
 )

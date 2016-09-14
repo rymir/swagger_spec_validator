@@ -5,8 +5,10 @@ try:
     import simplejson as json
 except ImportError:
     import json
-import yaml
 import six
+import yaml
+from jsonschema import RefResolver as BaseRefResolver
+from jsonschema.compat import urlopen
 from six.moves.urllib import request
 
 TIMEOUT_SEC = 1
@@ -40,3 +42,16 @@ def _load(url, parser):
 class SwaggerValidationError(Exception):
     """Exception raised in case of a validation error."""
     pass
+
+
+class RefResolver(BaseRefResolver):
+
+    def resolve_remote(self, uri):
+        try:
+            return super(RefResolver, self).resolve_remote(uri)
+        except ValueError:
+            result = yaml.safe_load(urlopen(uri).read().decode('utf-8'))
+
+        if self.cache_remote:
+            self.store[uri] = result
+        return result

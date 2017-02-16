@@ -1,0 +1,13 @@
+ping:
+    get:
+        operationId: ping
+        parameters:
+            - name: pung
+              in: query
+              description: true or false
+              type: boolean
+        responses:
+            '200':
+                description: Successful response
+                schema:
+                    $ref: './pingpong_response.yml#/PingResponse'
